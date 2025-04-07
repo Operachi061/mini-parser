@@ -8,7 +8,7 @@ const mini_parser = @import("mini_parser");
 const debug = std.debug;
 
 const usage =
-    \\Usage: 001-example <opts>
+    \\Usage: example <opts>
     \\
     \\Options:
     \\  --help  -h      Display help list
@@ -40,8 +40,21 @@ pub fn main() !void {
 }
 ```
 
+## Installation
+
+Fetch mini-parser package to `build.zig.zon`:
+```sh
+zig fetch --save git+https://github.com/Operachi061/mini-parser
+```
+
+Then add following to `build.zig`:
+```zig
+const mini_parser = b.dependency("mini_parser", .{});
+exe.root_module.addImport("mini_parser", mini_parser.module("mini_parser"));
+```
+
 After building, test it via:
-```bash
+```sh
 ./example --help -b --text foo
 ```
 

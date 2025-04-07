@@ -4,7 +4,7 @@ mini-parser is a very-minimal parser for [Zig](https://ziglang.org) language.
 ## Example
 ```zig
 const std = @import("std");
-const mini_parser = @import("mini_parser.zig");
+const mini_parser = @import("mini_parser");
 const debug = std.debug;
 
 const usage =

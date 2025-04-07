@@ -1,0 +1,13 @@
+.{
+    .name = .mini_parser,
+
+    .version = "0.0.0",
+    .minimum_zig_version = "0.15.0-dev.208+8acedfd5b",
+
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+    .fingerprint = 0xcddd5f41eb6a7a8c,
+}

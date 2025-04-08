@@ -6,14 +6,15 @@ mini-parser is a very-minimal parser for [Zig](https://ziglang.org) language.
 const std = @import("std");
 const mini_parser = @import("mini_parser");
 const debug = std.debug;
+const posix = std.posix;
 
 const usage =
     \\Usage: example <opts>
     \\
     \\Options:
-    \\  --help  -h      Display help list
-    \\  --text  -t      Print text
-    \\  --bool  -b      Print boolean
+    \\  --help  -h      Display help list.
+    \\  --text  -t      Print the text.
+    \\  --bool  -b      Enable the boolean.
     \\
 ;
 
@@ -29,11 +30,20 @@ pub fn main() !void {
         });
 
         switch (parser.argument) {
-            0 => debug.print("no argument was given.\n", .{}),
-            1 => debug.print("{s}\n", .{usage}), // 1
+            0 => {
+                debug.print("no argument was given.\n", .{});
+                posix.exit(0);
+            },
+            1 => { // 1
+                debug.print("{s}\n", .{usage});
+                posix.exit(0);
+            },
             2 => debug.print("Text: {s}\n", .{parser.value}), // 2
             3 => debug.print("Enabled boolean!\n", .{}), // 3
-            4 => debug.print("argument '{s}' does not exist.\n", .{argv[i]}),
+            4 => {
+                debug.print("argument '{s}' does not exist.\n", .{argv[i]});
+                posix.exit(0);
+            },
             else => {},
         }
     }
@@ -55,7 +65,7 @@ exe.root_module.addImport("mini_parser", mini_parser.module("mini_parser"));
 
 After building, test it via:
 ```sh
-./example --help -b --text foo
+./example --bool --text foo -h
 ```
 
 ## License

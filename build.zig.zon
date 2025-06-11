@@ -7,7 +7,7 @@
     .paths = .{
         "build.zig",
         "build.zig.zon",
-        "src",
+        "mini-parser.zig",
     },
     .fingerprint = 0xcddd5f41eb6a7a8c,
 }

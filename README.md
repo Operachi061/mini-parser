@@ -21,32 +21,43 @@ const usage =
 pub fn main() !void {
     var i: usize = 0;
     while (std.os.argv.len > i) : (i += 1) {
-        const parser = try mini_parser.init(i, &.{
-            .{ .long = "help", .short = 'h', .type = .boolean },  // 1
-            .{ .long = "text", .short = 't', .type = .argument }, // 2
-            .{ .long = "bool", .short = 'b', .type = .boolean },  // 3
-        });
+        var args: usize = 1;
 
-        switch (parser.arg) {
-            0 => {
-                debug.print("no argument was given.\n", .{});
-                posix.exit(0);
-            },
-            1 => { // 1
-                debug.print("{s}\n", .{usage});
-                posix.exit(0);
-            },
-            2 => { // 2
-                debug.print("Text: {s}\n", .{parser.val});
-            }, 
-            3 => { // 3
-                debug.print("Enabled boolean!\n", .{}); 
-            },
-            4 => {
-                debug.print("argument '{s}' does not exist.\n", .{parser.val});
-                posix.exit(0);
-            },
-            else => {},
+        blk: while (true) {
+            const parser = try mini_parser.init(i, args, &.{
+                .{ .long = "help", .short = 'h', .type = .boolean },
+                .{ .long = "text", .short = 't', .type = .argument },
+                .{ .long = "bool", .short = 'b', .type = .boolean },
+            });
+
+            switch (parser.arg) {
+                0 => {
+                    debug.print("no argument was given.\n", .{});
+                    posix.exit(0);
+                },
+                1 => {
+                    debug.print("argument '{s}' does not exist.\n", .{parser.val});
+                    posix.exit(0);
+                },
+                'h' => {
+                    debug.print("{s}\n", .{usage});
+                    posix.exit(0);
+                },
+                't' => {
+                    debug.print("Text: {s}\n", .{parser.val});
+                },
+                'b' => {
+                    debug.print("Enabled boolean!\n", .{});
+                },
+                else => {},
+            }
+
+            if (args != parser.args) {
+                args = parser.args;
+                continue :blk;
+            }
+
+            break;
         }
     }
 }
@@ -67,7 +78,7 @@ exe.root_module.addImport("mini-parser", mini_parser.module("mini-parser"));
 
 After building, test it via:
 ```sh
-./example --bool --text foo -h
+./example -tb foo --help
 ```
 
 ## Unlicense
